@@ -1,7 +1,7 @@
-import { resolveObjectURL } from "node:buffer";
-import test from "node:test";
+import { Player } from "./player";
+import { Choice } from "./choice";
 
-class Board {
+export class Board {
 
   private maxHeight: number;
   private maxWidht: number;
@@ -14,22 +14,41 @@ class Board {
     this.maxWidht = maxWidht;
   }
 
-  public addOTile(c: Coordinate): void{
-    if (this.o_tiles.includes(c)) {
-      throw new Error("This tile is already in the list of O-tiles");
-    }
-    else {
-        this.o_tiles.push(c);
-    }
-  }
 
-  public addXTile(c: Coordinate): void{
-    if (this.x_tiles.includes(c)) {
-      throw new Error("This tile is already in the list of X-tiles");
+
+  // public addOTile(c: Coordinate): void{
+  //   if (this.o_tiles.includes(c)) {
+  //     throw new Error("This tile is already in the list of O-tiles");
+  //   }
+  //   else {
+  //       this.o_tiles.push(c);
+  //   }
+  // }
+
+  // public addXTile(c: Coordinate): void{
+  //   if (this.x_tiles.includes(c)) {
+  //     throw new Error("This tile is already in the list of X-tiles");
+  //   }
+  //   else {
+  //       this.x_tiles.push(c);
+  //   }
+  // }
+
+
+
+
+
+  public onClick(coordinate: Coordinate, choice: Choice): Boolean {
+    if (this.o_tiles.includes(coordinate) || this.x_tiles.includes(coordinate) || !this.outOfBounds(coordinate)) {
+      return false;
+    }
+    else if (choice == Choice.O) {
+      this.o_tiles.push(coordinate);
     }
     else {
-        this.x_tiles.push(c);
+      this.x_tiles.push(coordinate);
     }
+    return true;
   }
 
   private myCopy(xs: Array<Coordinate>): Array<Coordinate>  {
@@ -45,11 +64,11 @@ class Board {
   }
 
   private routeDown(testTiles: Array<Coordinate>, otherTiles: Array<Coordinate>): Boolean|undefined {
-    if (testTiles.length == 0) {
+    if (testTiles.length === 0) {
         return false;
     }
     let head: Coordinate = testTiles.at(0)!;
-    if (head.getY() == this.maxHeight - 1) {
+    if (head.getY() === this.maxHeight - 1) {
         return true;
     }
     else if (!otherTiles.includes(head) || this.outOfBounds(head)) {
@@ -77,7 +96,7 @@ class Board {
         return false;
     }
     let head: Coordinate = testTiles.at(0)!;
-    if (head.getX() == this.maxWidht - 1) {
+    if (head.getX() === this.maxWidht - 1) {
         return true;
     }
     else if (!otherTiles.includes(head) || this.outOfBounds(head)) {
@@ -108,7 +127,7 @@ class Board {
         }
       }
       let route = this.routeDown(toptiles, this.x_tiles);
-      if (route == undefined || !route) {
+      if (route === undefined || !route) {
         return false;
       }
       else {
@@ -123,7 +142,7 @@ class Board {
         }
       }
       let route = this.routeRight(leftTiles, this.x_tiles);
-      if (route == undefined || !route) {
+      if (route === undefined || !route) {
         return false;
       }
       else {
@@ -131,5 +150,54 @@ class Board {
       }
     }
   }
+  
+  private myHas(test: Coordinate, c: Choice): Boolean {
+    if (c === Choice.O) {
+      for (let tile of this.o_tiles) {
+        if (tile.equals(test)) {
+          return true;
+        }
+      }
+      return false; 
+    }
+    else {
+      for (let tile of this.x_tiles) {
+        if (tile.equals(test)) {
+          return true;
+        }
+      }
+      return false; 
+    }
+  }
 
+  public boardRepresentation(): String[][] {
+    let matrix: String[][] = [[]];
+    for (let i = 0; i < this.maxHeight; i++) {
+      for (let j = 0; j < this.maxWidht; j++) {
+        let test: Coordinate = new Coordinate(j,i);
+        if (this.myHas(test, Choice.O)) {
+          matrix.at(i)?.push("O");
+        }
+        else if (this.myHas(test, Choice.X)) {
+          matrix.at(i)?.push("X");
+        }
+        else {
+          matrix.at(i)?.push(".");
+        }
+      }
+    } 
+    return matrix;
+  }
+
+  public fullBoard(): Boolean {
+    for (let i = 0; i < this.maxHeight; i++) {
+      for (let j = 0; j < this.maxWidht; j++) { 
+        let test: Coordinate = new Coordinate(j,i);
+        if (!(this.myHas(test, Choice.O)) || !(this.myHas(test, Choice.X))) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
 }

@@ -1,5 +1,5 @@
 
-enum Choice {
+export enum Choice {
     X,
     O,
 }

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<script src="controller.js"></script>
+
+<html>
+    <head>
+        <title>A crazy game</title>
+
+    </head>
+    
+    <body>
+        <h1>Welcome to a crazy game</h1>
+
+        <button class="open-button" onclick="startGameButton()">Start game</button>
+
+
+
+        <div class="p-2">
+            <form onstart="return startGame(this)">
+                  <div>
+                    <label>Height:</label>
+                    <input id="height" name="height" type="text">
+                  </div>
+                  <div>
+                    <label>Widht:</label>
+                    <input id="width" name="width" type="text">
+                  </div>
+                  <button onclick="startGame(document.getElementById('width').value,document.getElementById('height').value)">Start</button>
+                </form>
+            </div>
+
+        
+
+    </body>
+
+</html>
