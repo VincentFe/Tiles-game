@@ -5,19 +5,23 @@ export class Player {
 
     private name: String;
     private choice: Choice;
-    private board: Board;
+    private startTime: number;
 
-    constructor(name: String, choice: Choice, board: Board) {
+    constructor(name: String, choice: Choice) {
         this.name = name;
         this.choice = choice;
-        this.board = board;
+        this.startTime = Date.now();
     }
 
     public getChoice(): Choice {
         return this.choice;
     }
 
-    public onClick(c: Coordinate): Boolean {
-        return this.board.onClick(c, this.choice);
+    public getName(): String {
+        return this.name;
+    }
+
+    public getStartTime(): number {
+        return this.startTime;
     }
 }

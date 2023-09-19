@@ -7,11 +7,17 @@ export class Board {
   private maxWidht: number;
   private o_tiles = new Array<Coordinate>();
   private x_tiles = new Array<Coordinate>();
+  private playerO: Player;
+  private playerX: Player;
+  private turn: Player;
 
 
-  public constructor(maxHeight: number, maxWidht: number) {
+  public constructor(maxHeight: number, maxWidht: number, nameO: String, nameX: String) {
     this.maxHeight = maxHeight;
     this.maxWidht = maxWidht;
+    this.playerO = new Player(nameO, Choice.O);
+    this.playerX = new Player(nameX, Choice.X);
+    this.turn = this.playerO;
   }
 
 
@@ -34,7 +40,10 @@ export class Board {
   //   }
   // }
 
-
+  public getPlayerInfo(c: Choice) {
+    if (c === Choice.O) {return this.playerO;}
+    else {return this.playerX;}
+  }
 
 
 

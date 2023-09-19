@@ -13,21 +13,26 @@
 
         <button class="open-button" onclick="startGameButton()">Start game</button>
 
-
-
-        <div class="p-2">
-            <form onstart="return startGame(this)">
-                  <div>
-                    <label>Height:</label>
-                    <input id="height" name="height" type="text">
-                  </div>
-                  <div>
-                    <label>Widht:</label>
-                    <input id="width" name="width" type="text">
-                  </div>
-                  <button onclick="startGame(document.getElementById('width').value,document.getElementById('height').value)">Start</button>
-                </form>
+        <form onstart="return startGame(this)">
+            <div>
+              <label>Height:</label>
+              <input id="height" name="height" type="text">
             </div>
+            <div>
+              <label>Widht:</label>
+              <input id="width" name="width" type="text">
+            </div>
+            <div>
+                <label>Player playing with O:</label>
+                <input id="playerO" name="playerO" type="text">
+              </div>
+              <div>
+                <label>Player playinh with X:</label>
+                <input id="playerX" name="playerX" type="text">
+              </div>
+
+            <button onclick="startGame(document.getElementById('width').value,document.getElementById('height').value, document.getElementById('playerO').value,document.getElementById('playerX').value)">Start</button>
+          </form>
 
         
 
